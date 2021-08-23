@@ -1,18 +1,32 @@
 const express = require('express');
 const bd=require('body-parser');
 const cors=require('cors');
-
+const mongoose = require('mongoose');
 const App = express();
 const Port = 5000;
 
 
 App.use(cors());
 App.use(bd.urlencoded({
-    urlencoded:false
+    urlencoded:false,
+    extended:true
 }))
 
 App.use(bd.json());
 
+mongoose.connect('mongodb+srv://NodeMango:pakistan4@cluster0.ombzu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
+    useCreateIndex:true,
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+})
+
+mongoose.connection.on("connected",()=>{
+    console.log("Database Connected!")
+})
+
+mongoose.connection.on("error",()=>{
+    console.log("Database Not Connected!")
+})
 
 App.get('/', (req, res) => {
     res.send("Hello World")
